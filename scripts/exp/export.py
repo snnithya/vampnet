@@ -1,7 +1,12 @@
 from pathlib import Path
 import shutil
 
+import shutil
 import argparse
+from vampnet import DEFAULT_HF_MODEL_REPO
+from huggingface_hub import create_repo, repo_exists, HfApi
+
+
 
 parser = argparse.ArgumentParser(description="Export the fine-tuned model to the repo")
 parser.add_argument(
@@ -12,31 +17,69 @@ parser.add_argument(
     "--model", type=str, default="latest",
     help="model version to export. check runs/<name> for available versions"
 )
+parser.add_argument(
+    "--repo", type=str, default=DEFAULT_HF_MODEL_REPO,
+    help="name of the repo to export to"
+)
 
 parser.add_argument(
     "--run_dir", type=str, default="runs",
     help="directory where the run is stored"
 )
 
+parser.add_argument(
+    "--username", type=str, default="snnithya",
+    help="username of the huggingface account"
+)
+
 args = parser.parse_args()
 name = args.name
 version = args.model
 
+print(f"~~~~~~~~~~~ vampnet export! ~~~~~~~~~~~~")
+print(f"exporting {name} version {version} to {args.repo}\n")
+
 run_dir = Path(f"{args.run_dir}/{name}")
 repo_dir = Path("models/vampnet")
 
+# create our repo
+new_repo = False
+if not repo_exists(f"{args.username}/{args.repo}"):
+    print(f"repo {args.username}/{args.repo} does not exist, creating it")
+    print(f"creating a repo at {args.username}/{args.repo}")
+    create_repo(args.repo)
+    new_repo = True
+
+paths = []
 for part in ("coarse", "c2f"):
     outdir = repo_dir / "loras" / name 
     outdir.mkdir(parents=True, exist_ok=True)
     outpath = outdir / f"{part}.pth"
     path = run_dir / part / version / "vampnet" / "weights.pth"
+    # path.rename(outpath)
     shutil.copy(path, outpath)
-    print(f"moved {path} to {outpath}")
+    paths.append(outpath)
+    print(f"copied {path} to {outpath}")
 
-from huggingface_hub import Repository
-repo = Repository(str(repo_dir))
-print(f"pushing {repo_dir} to {name}")
-repo.push_to_hub(
-    commit_message=f"add {name}",
-)
+print(f"uploading files to {args.repo}")
+# upload files to the repo
+
+# if it's a new repo, let's add the default models too
+if new_repo:
+    paths.extend([repo_dir / "c2f.pth", repo_dir / "coarse.pth", repo_dir / "codec.pth", repo_dir / "wavebeat.pth"])
+
+api = HfApi()
+
+for path in paths:
+    path_in_repo = str(path.relative_to(repo_dir))
+    print(f"uploading {path} to {args.repo}/{path_in_repo}")
+    api.upload_file(
+        path_or_fileobj=path,
+        path_in_repo=path_in_repo,
+        repo_id=f"{args.username}/{args.repo}",
+        token=True,
+        commit_message=f"uploading {path_in_repo}",
+    )
+
+
 print("done!!! >::0")

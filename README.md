@@ -159,24 +159,34 @@ launch the c2f job:
 python  scripts/exp/train.py --args.load conf/generated/<fine_tune_name>/c2f.yml 
 ```
 
+# Resuming a Training/Finetuning Job from checkpoint. 
+
+To resume from checkpoint, use the `--resume` flag and the `--save_path` to point to the checkpoint you want to resume from.
+```bash
+python scripts/exp/train.py --args.load conf/generated/steve/coarse.yml --save_path runs/steve/coarse --resume
+```
+
 # Exporting your model
 
 Once your model has been fine-tuned, you can export it to a HuggingFace model. 
 
 In order to use your model in `app.py`, you will need to export it to HuggingFace.
 
-**NOTE**: In order to export, you will need a [huggingface account](https://huggingface.co/). 
-
-You need to fork the [vampnet models repo](https://huggingface.co/hugggof/vampnet) which stores the default vampnet models. 
-
-Now, replace the contents of the file named `./DEFAULT_HF_MODEL_REPO` in the root folder with the name of your repo (usually `[your_username]/vampnet`). 
+**NOTE**: In order to export, you will need a [huggingface account](https://huggingface.co/).
 
 Now, log in to huggingface using the command line:
 ```bash
 huggingface-cli login
 ```
 
-Now, run the following command to export your model:
+replace the contents of the file named `./DEFAULT_HF_MODEL_REPO` with your `<HUGGINGFACE_USERNAME>/vampnet`. A model repo will be automatically created for you with `export.py`. The default is `hugggof/vampnet`. 
+
+for example, if my username is `hugggof`, I would run the following command:`
+```bash
+echo 'hugggof/vampnet' > ./DEFAULT_HF_MODEL_REPO
+```
+
+Now, run the following command to export your model (replace `<your_finetuned_model_name>` with the name of your model):
 
 ```bash
 python scripts/exp/export.py --name <your_finetuned_model_name> --model latest
