@@ -11,8 +11,7 @@ from typing import List
 """
 
 @argbind.bind(without_prefix=True, positional=True)
-def fine_tune(audio_files_or_folders: List[str], name: str):
-
+def fine_tune(audio_files_or_folders: List[str], name: str, rundir: str):
     conf_dir = Path("conf")
     assert conf_dir.exists(), "conf directory not found. are you in the vampnet directory?"
 
@@ -34,7 +33,7 @@ def fine_tune(audio_files_or_folders: List[str], name: str):
         "VampNet.n_heads": 20,
         "AudioDataset.duration": 3.0,
         "AudioDataset.loudness_cutoff": -40.0,
-        "save_path": f"./runs/{name}/c2f",
+        "save_path": f"{rundir}/{name}/c2f",
         "fine_tune_checkpoint": "./models/vampnet/c2f.pth"
     }
 
@@ -43,14 +42,14 @@ def fine_tune(audio_files_or_folders: List[str], name: str):
         "fine_tune": True,
         "train/AudioLoader.sources": audio_files_or_folders,
         "val/AudioLoader.sources": audio_files_or_folders,
-        "save_path": f"./runs/{name}/coarse",
+        "save_path": f"{rundir}/{name}/coarse",
         "fine_tune_checkpoint": "./models/vampnet/coarse.pth"
     }
 
     interface_conf = {
-        "Interface.coarse_ckpt": f"./runs/{name}/coarse/latest/vampnet/weights.pth",
+        "Interface.coarse_ckpt": f"{rundir}/{name}/coarse/latest/vampnet/weights.pth",
 
-        "Interface.coarse2fine_ckpt": f"./runs/{name}/c2f/latest/vampnet/weights.pth",
+        "Interface.coarse2fine_ckpt": f"{rundir}/{name}/c2f/latest/vampnet/weights.pth",
         "Interface.wavebeat_ckpt": "./models/wavebeat.pth",
 
         "Interface.codec_ckpt": "./models/vampnet/codec.pth",
@@ -72,7 +71,6 @@ def fine_tune(audio_files_or_folders: List[str], name: str):
 
 if __name__ == "__main__":
     args = argbind.parse_args()
-
     with argbind.scope(args):
         fine_tune()
 

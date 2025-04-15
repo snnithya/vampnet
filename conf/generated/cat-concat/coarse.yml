@@ -1,0 +1,8 @@
+$include:
+- conf/lora/lora.yml
+fine_tune: true
+fine_tune_checkpoint: ./models/vampnet/coarse.pth
+save_path: /home/mila/n/nithya.shikarpur/scratch/checkpoints/vampnet/cat-concat/coarse
+train/AudioLoader.sources: &id001
+- /home/mila/n/nithya.shikarpur/scratch/cat-rave/data-10s
+val/AudioLoader.sources: *id001

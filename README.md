@@ -137,7 +137,7 @@ To fine-tune a model, use the script in `scripts/exp/fine_tune.py`
 
 for an audio folder
 ```bash
-python scripts/exp/fine_tune.py /path/to/audio/folder <fine_tune_name>
+python scripts/exp/fine_tune.py /path/to/audio/folder <fine_tune_name> <path to save runs or checkpoints>
 ```
 
 for multiple files
