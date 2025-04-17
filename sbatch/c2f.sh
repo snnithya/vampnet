@@ -15,6 +15,6 @@ conda activate "vampnet"
 cd $HOME
 cd vampnet
 
-python scripts/exp/train.py --args.load conf/generated/cat-concat/c2f.yml
+python scripts/exp/train.py --args.load conf/generated/cat-bass/c2f.yml
 
 

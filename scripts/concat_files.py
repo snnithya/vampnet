@@ -6,8 +6,8 @@ import audiotools as at
 from tqdm import tqdm
 
 
-INPUT_DIR = Path("/home/mila/n/nithya.shikarpur/scratch/cat-rave/data")
-OUTPUT_DIR = Path("/home/mila/n/nithya.shikarpur/scratch/cat-rave/data-10s")
+INPUT_DIR = Path("/home/mila/n/nithya.shikarpur/scratch/cat-rave/data/")
+OUTPUT_DIR = Path("/home/mila/n/nithya.shikarpur/scratch/cat-rave/data-cat-bass/")
 
 MIN_DURATION = 10.0 # min duration of each file in seconds
 
@@ -38,6 +38,10 @@ def concat_if_under_min_duration(input_dir: Path, output_dir: Path, min_duration
         outpath = output_dir / Path(sig.path_to_file).name
         sig.write(outpath)
         print(f"saved sig to {outpath}")
+
+    # print total duration of all files
+    total_duration = sum([sig.duration for sig in sigs])
+    print(f"total duration of all files: {total_duration:.2f} seconds")
 
 
 if __name__ == "__main__":

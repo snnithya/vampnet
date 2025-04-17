@@ -1,0 +1,6 @@
+AudioLoader.sources:
+- - /home/mila/n/nithya.shikarpur/scratch/cat-rave/data-
+Interface.coarse2fine_ckpt: /home/mila/n/nithya.shikarpur/scratch/checkpoints/vampnet/cat-bass/c2f/latest/vampnet/weights.pth
+Interface.coarse_ckpt: /home/mila/n/nithya.shikarpur/scratch/checkpoints/vampnet/cat-bass/coarse/latest/vampnet/weights.pth
+Interface.codec_ckpt: ./models/vampnet/codec.pth
+Interface.wavebeat_ckpt: ./models/wavebeat.pth
