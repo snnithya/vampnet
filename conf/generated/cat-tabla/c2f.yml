@@ -9,7 +9,7 @@ VampNet.n_heads: 20
 VampNet.n_layers: 16
 fine_tune: true
 fine_tune_checkpoint: ./models/vampnet/c2f.pth
-save_path: /home/mila/n/nithya.shikarpur/scratch/checkpoints/vampnet/cat-bass/c2f
+save_path: /home/mila/n/nithya.shikarpur/scratch/checkpoints/vampnet/cat-tabla/c2f
 train/AudioLoader.sources: &id001
-- /home/mila/n/nithya.shikarpur/scratch/cat-rave/data-cat-bass
+- /home/mila/n/nithya.shikarpur/scratch/cat-rave/cat-tabla
 val/AudioLoader.sources: *id001

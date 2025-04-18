@@ -1,5 +1,6 @@
 from pathlib import Path
 import shutil
+import os
 
 import shutil
 import argparse
@@ -44,15 +45,15 @@ repo_dir = Path("models/vampnet")
 
 # create our repo
 new_repo = False
-if not repo_exists(f"{args.username}/{args.repo}"):
-    print(f"repo {args.username}/{args.repo} does not exist, creating it")
-    print(f"creating a repo at {args.username}/{args.repo}")
+if not repo_exists(f"{args.repo}"):
+    print(f"repo {args.repo} does not exist, creating it")
+    print(f"creating a repo at {args.repo}")
     create_repo(args.repo)
     new_repo = True
 
 paths = []
 for part in ("coarse", "c2f"):
-    outdir = repo_dir / "loras" / name 
+    outdir = repo_dir / "loras" / name
     outdir.mkdir(parents=True, exist_ok=True)
     outpath = outdir / f"{part}.pth"
     path = run_dir / part / version / "vampnet" / "weights.pth"
@@ -76,7 +77,7 @@ for path in paths:
     api.upload_file(
         path_or_fileobj=path,
         path_in_repo=path_in_repo,
-        repo_id=f"{args.username}/{args.repo}",
+        repo_id=f"{args.repo}",
         token=True,
         commit_message=f"uploading {path_in_repo}",
     )
