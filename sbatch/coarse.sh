@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=sound-fx-coarse
+#SBATCH --job-name=rehearse-coarse
 #SBATCH --partition=long                          
 #SBATCH --cpus-per-task=4                                
 #SBATCH --gres=gpu:1
@@ -15,6 +15,6 @@ conda activate "vampnet"
 cd $HOME
 cd vampnet
 
-python scripts/exp/train.py --args.load conf/generated/sound-fx/coarse.yml
+python scripts/exp/train.py --args.load conf/generated/CatB418-cat/coarse.yml
 
 

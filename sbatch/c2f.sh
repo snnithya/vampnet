@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=sound-fx-c2f
+#SBATCH --job-name=rehearse-c2f
 #SBATCH --partition=long                          
 #SBATCH --cpus-per-task=4                                
 #SBATCH --gres=gpu:1
@@ -15,6 +15,6 @@ conda activate "vampnet"
 cd $HOME
 cd vampnet
 
-python scripts/exp/train.py --args.load conf/generated/sound-fx/c2f.yml
+python scripts/exp/train.py --args.load conf/generated/CatB418-cat/c2f.yml
 
 
